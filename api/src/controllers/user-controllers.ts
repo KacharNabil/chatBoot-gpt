@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import User from "../models/User.js"
 import { compare, hash } from "bcrypt";
+import { createToken } from "../utils/token-manager.js";
 
 export const getAllUsers = async (
     req: Request,
@@ -31,6 +32,26 @@ export const userSignup = async (
         const hashedPassword = await hash(password,10);
         const user = new User({ name, email, password: hashedPassword});
         await  user.save();
+          // remove the exicting cookie
+          res.clearCookie("auth_token",{
+            httpOnly: true,
+            domain: 'localhsot',
+            signed: true,
+            path: '/',
+        });
+
+        const token = createToken(user._id.toString() ,user.email,"7d");
+        const expires = new Date();
+        expires.setDate(expires.getDate()+ 7);
+
+        res.cookie("auth_token",token,{
+            path: "/",
+            domain: "localhost",
+            expires,
+            httpOnly: true,
+            signed : true,
+        });
+        
         return res.status(200).json({id:user._id,name:user.name,email:user.email});
     } catch (error) {
         console.log(error);
@@ -54,6 +75,28 @@ export const userLogin = async (
         if (!isPasswordCorrect) {
             return res.status(401).send('incorrect password');
         }
+
+
+        // remove the exicting cookie
+        res.clearCookie("auth_token",{
+            httpOnly: true,
+            domain: 'localhsot',
+            signed: true,
+            path: '/',
+        });
+
+        const token = createToken(user._id.toString() ,user.email,"7d");
+        const expires = new Date();
+        expires.setDate(expires.getDate()+ 7);
+
+        res.cookie("auth_token",token,{
+            path: "/",
+            domain: "localhost",
+            expires,
+            httpOnly: true,
+            signed : true,
+        });
+
         return res.status(200).json({id:user._id,name:user.name,email:user.email});
     } catch (error) {
         console.log(error);
