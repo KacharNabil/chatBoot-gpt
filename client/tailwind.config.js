@@ -12,6 +12,9 @@ export default {
     extend: {},
   },
   darkMode: "class",
-  plugins: [nextui()]
+  plugins: [nextui(),require("daisyui")],
+  daisyui: {
+    themes: ["light", "dark", "cupcake"],
+  },
 }
 
