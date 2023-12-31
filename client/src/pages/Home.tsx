@@ -13,12 +13,12 @@ export default function Home() {
       <NavBar />
       < Hero />
       <div id="1">
-        <h2 className="text-center text-5xl font-bold">FEATURES</h2>
+        <h2 className="text-center text-5xl font-bold z-10">FEATURES</h2>
       </div>
       <div className="absolute top-0 right-0 bottom-0 left-0 w-[700px] h-[600px]  bg-blue-500 rounded-full  filter blur-3xl opacity-10"></div>
       <Features />
       <div className="mt-16">
-        <h2 className="text-center text-5xl font-bold">CUSTOMERS</h2>
+        <h2 className="text-center text-5xl font-bold z-10">CUSTOMERS</h2>
       </div>
       <div id="2" className="flex justify-between mx-14 mt-16 z-10">
         <Reviews />

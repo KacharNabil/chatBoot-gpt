@@ -12,7 +12,8 @@ export default function Hero() {
     return (
         <div className='z-10'>
             <div className="hero min-h-screen bg-base-400">
-                <div className="hero-content flex-col lg:flex-row-reverse">
+                <div className="hero-content 
+                z-10 flex-col lg:flex-row-reverse">
                     <Lottie
 
                         onComplete={() => {
@@ -23,7 +24,7 @@ export default function Hero() {
                         loop={false}
                         lottieRef={homeRef}
                         animationData={home} />
-                    <div>
+                    <div className='z-10'>
                         <h1 className="text-6xl font-bold">Meet your AI  companion</h1>
                         <p className="py-6 text-3xl font-semibold">Empowering businesses to deliver exceptional service effortlessly.</p>
                         <div className='flex justify-start mt-4'>
