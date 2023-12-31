@@ -18,7 +18,7 @@ export default function Login() {
       await auth?.login(email, password);
       console.log("After login:", auth?.isLoggedIn);
       toast.success("Signed In Successfully", { id: "login" });
-    } catch (error) {
+    } catch (error : any) {
       const errorMessage = error?.response?.data || "Signing In Failed";
       toast.error(errorMessage, { id: "login" });
     }
