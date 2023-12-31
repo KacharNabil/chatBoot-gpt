@@ -23,12 +23,12 @@ const AuthContext = createContext<UserAuth | null>(null);
 export const AuthProvider = ({children} : {children: ReactNode}) =>{
      const [User, setUser] = useState<User | null>(null);
      const [isLoggedIn, setIsloggedIn] = useState(false);
-     
+
      useEffect(() => {
        const checkStatus =async () => {
         const data = await checkAuthStatus();
         if(data){
-          setIsloggedIn(true);
+        setIsloggedIn(true);
         setUser({ name: data.name, email: data.email });
         }
        }

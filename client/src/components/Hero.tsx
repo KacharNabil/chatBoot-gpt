@@ -2,7 +2,7 @@ import home from '../assets/home.json'
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { useRef } from "react";
 import { Button, Avatar, AvatarGroup } from "@nextui-org/react";
-
+import { Link } from 'react-router-dom';
 
 
 
@@ -10,8 +10,8 @@ export default function Hero() {
     const homeRef = useRef<LottieRefCurrentProps>(null);
 
     return (
-        <div>
-            <div className="hero min-h-screen bg-base-200">
+        <div className='z-10'>
+            <div className="hero min-h-screen bg-base-400">
                 <div className="hero-content flex-col lg:flex-row-reverse">
                     <Lottie
 
@@ -24,9 +24,10 @@ export default function Hero() {
                         lottieRef={homeRef}
                         animationData={home} />
                     <div>
-                        <h1 className="text-5xl font-bold">Meet your AI helpdesk companion</h1>
-                        <p className="py-6">Empowering businesses to deliver exceptional service effortlessly.</p>
+                        <h1 className="text-6xl font-bold">Meet your AI  companion</h1>
+                        <p className="py-6 text-3xl font-semibold">Empowering businesses to deliver exceptional service effortlessly.</p>
                         <div className='flex justify-start mt-4'>
+                            
                         <AvatarGroup isBordered max={3} total={10}>
                             <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
                             <Avatar src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
@@ -38,8 +39,10 @@ export default function Hero() {
                         </div>
                         
                         <div className='flex justify-start mt-10'>
-                            <Button className="text-white font-semibold  bg-blue-600 mr-8" radius="sm" href="#" variant="flat">Register</Button>
-                            <Button className="text-white font-semibold  bg-blue-600" href="#" radius="sm" variant="flat">Login</Button>
+                            <Link to='/register'>
+                            <Button className="text-white font-semibold  bg-blue-600 mr-8" radius="sm" href="/register" variant="flat">Get in Touch</Button>
+                            </Link>
+                          
                         </div>
                     </div>
                 </div>
