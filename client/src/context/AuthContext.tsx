@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext } from "react";
 import { useState, useEffect } from "react";
-import { loginUser } from "../api/api-communicator";
+import { checkAuthStatus, loginUser } from "../api/api-communicator";
 
 type User ={
     name:string;
@@ -23,8 +23,17 @@ const AuthContext = createContext<UserAuth | null>(null);
 export const AuthProvider = ({children} : {children: ReactNode}) =>{
      const [User, setUser] = useState<User | null>(null);
      const [isLoggedIn, setIsloggedIn] = useState(false);
+     
      useEffect(() => {
-       // if the users cookies are valid then skip login
+       const checkStatus =async () => {
+        const data = await checkAuthStatus();
+        if(data){
+          setIsloggedIn(true);
+        setUser({ name: data.name, email: data.email });
+        }
+       }
+       checkStatus();
+      
      }, []);
 
      const login = async (email: string, password: string) => {
@@ -37,7 +46,7 @@ export const AuthProvider = ({children} : {children: ReactNode}) =>{
         setIsloggedIn(false);
         console.log(error);
         setUser(null);
-        throw error; // Make sure to reset the user state on login failure
+        throw error; 
         
       }
     };
