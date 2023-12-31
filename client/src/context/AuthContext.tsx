@@ -1,38 +1,50 @@
-import { ReactNode, createContext } from "react";
+import { ReactNode, createContext, useContext } from "react";
 import { useState, useEffect } from "react";
+import { loginUser } from "../api/api-communicator";
 
 type User ={
-    name:string,
-    email:string
+    name:string;
+    email:string;
 };
 
 
 type UserAuth = {
-    isLoggedIn : boolean,
-    User: User | null,
-    login: (email:string, password:string)=>void,
-    logout: ()=>void,
-    signup: (name:string,email:string, password:string)=>void,
+    isLoggedIn : boolean;
+    User: User | null;
+    login: (email:string, password:string)=>Promise<void>;
+    logout: ()=>Promise<void>;
+    signup: (name:string,email:string, password:string)=>Promise<void>;
 }
 
 
 
 const AuthContext = createContext<UserAuth | null>(null);
 
-const AuthProvider = ({children} : {children: ReactNode}) =>{
+export const AuthProvider = ({children} : {children: ReactNode}) =>{
      const [User, setUser] = useState<User | null>(null);
      const [isLoggedIn, setIsloggedIn] = useState(false);
      useEffect(() => {
        // if the users cookies are valid then skip login
      }, []);
 
-     const login = (email:string, password:string) => {
+     const login = async (email: string, password: string) => {
+      try {
+        const data = await loginUser(email, password);
+        setIsloggedIn(true);
+        setUser({ name: data.name, email: data.email });
+       
+      } catch (error) {
+        setIsloggedIn(false);
+        console.log(error);
+        setUser(null);
+        throw error; // Make sure to reset the user state on login failure
+        
+      }
+    };
+     const signup = async (name:string,email:string, password:string) => {
         
      };
-     const signup = (name:string,email:string, password:string) => {
-        
-     };
-     const logout = () => {
+     const logout = async () => {
         
      };
 
@@ -41,7 +53,7 @@ const AuthProvider = ({children} : {children: ReactNode}) =>{
         isLoggedIn,
         login,
         signup,
-        logout
+        logout,
      };
 
      return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
@@ -49,3 +61,5 @@ const AuthProvider = ({children} : {children: ReactNode}) =>{
 
 
 }
+
+export const useAuth = ()=>useContext(AuthContext);
