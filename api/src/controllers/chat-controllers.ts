@@ -4,7 +4,6 @@ import { configureOpenAi } from "../config/openaiConfig.js";
 import { ChatCompletionRequestMessage, OpenAIApi } from "openai";
 
 
-
 export const generateChatCompletion = async (
     req:Request ,
     res: Response,
@@ -16,14 +15,14 @@ export const generateChatCompletion = async (
         if (!user) {
             return res.status(401).json({message:"User not registered OR Token malfunctioned"}) 
         }
-        // grab the previeus chats of the user
+       
         const chats = user.chats.map(({role,content})=>({role,content})) as ChatCompletionRequestMessage[];
         chats.push({content: message , role: "user"});
         user.chats.push({content: message , role: "user"});
-        // send all the chat with the new one
+       
         const config = configureOpenAi();
         const openai = new OpenAIApi(config);
-        // get the latest response 
+        
         const chatResponse = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: chats,
